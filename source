@@ -1,0 +1,61 @@
+--[[
+  if nil then local yourMotherfucker = diedLolHaha return end
+]]
+
+local player = game:GetService("Players").LocalPlayer
+local shop = player.PlayerGui.Shop
+local head = player.Character:WaitForChild("Head")
+
+local function touchInterestAction(part)
+    firetouchinterest(head, part, 0)
+    wait()
+    firetouchinterest(head, part, 1)
+end
+
+local updateTimeLabel = shop:FindFirstChild("UpdateTime")
+if updateTimeLabel then
+    updateTimeLabel:Destroy()
+end
+
+local GC = getconnections or get_signal_cons
+if GC then
+    for i,v in pairs(GC(player.Idled)) do
+        if v["Disable"] then
+            v["Disable"](v)
+        elseif v["Disconnect"] then
+            v["Disconnect"](v)
+        end
+    end
+else
+    player.Idled:Connect(function()
+        local VirtualUser = game:GetService("VirtualUser")
+        VirtualUser:CaptureController()
+        VirtualUser:ClickButton2(Vector2.new())
+    end)
+end
+
+while true do
+    wait()
+    local leaderstats = player:FindFirstChild("leaderstats")
+    if leaderstats then
+        local timeStat = leaderstats:FindFirstChild("Time")
+        if timeStat then
+            local timeLabel = shop.Gradient.Amount
+            timeLabel.Text = "Time: " .. tostring(timeStat.Value)
+        end
+    end
+
+    for _, descendant in pairs(workspace.Win:GetDescendants()) do
+        if descendant.Name == "TouchInterest" and descendant.Parent then
+            touchInterestAction(descendant.Parent)
+            break
+        end
+    end
+
+    for _, descendant in pairs(workspace.Win2:GetDescendants()) do
+        if descendant.Name == "TouchInterest" and descendant.Parent then
+            touchInterestAction(descendant.Parent)
+            break
+        end
+    end
+end
